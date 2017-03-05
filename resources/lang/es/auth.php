@@ -19,7 +19,7 @@ return [
             'title' => 'Iniciar Sesión',
             'button' => 'Acceder',
             'forgot_password' => '¿Olvidó su Contraseña?',
-            'remember_me' => 'Recordarme'
+            'remember_me' => 'Recordarme',
         ],
         'register' => [
             'title' => 'Registrarse',
