@@ -9,6 +9,9 @@ namespace App\Http\Lib\CubeSummation;
  */
 class DataManager
 {
+    /**
+     * @var array
+     */
     protected $data;
 
     /**
@@ -21,15 +24,20 @@ class DataManager
         $this->driver = $driver;
 
         $this->load();
-        $this->validate();
     }
 
     protected function load(): void
     {
-        $this->data = $this->driver->load();
+        $data = $this->driver->load();
+
+        if (!is_array($data)) {
+            $data = $this->buildArraySincePlainText($data);
+        }
+
+        $this->data = $data;
     }
 
-    public function get()
+    public function get(): array
     {
         return $this->data;
     }

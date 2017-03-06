@@ -3,6 +3,7 @@
 use App\Http\Lib\CubeSummation\DataManager;
 use App\Http\Lib\CubeSummation\exceptions\ErrorMatrixSizeException;
 use App\Http\Lib\CubeSummation\exceptions\ErrorNumberCasesException;
+use App\Http\Lib\CubeSummation\exceptions\ErrorNumberOperationsException;
 use App\Http\Lib\CubeSummation\Validation;
 
 /**
@@ -46,6 +47,8 @@ class ValidationTest extends PHPUnit_Framework_TestCase
         $validation->isValidNumberCases(0);
     }
 
+    //------------------------------------------------------------------------
+
     public function test_matrix_size_succes()
     {
         $data_manager_stub = $this->createMock(DataManager::class);
@@ -78,5 +81,40 @@ class ValidationTest extends PHPUnit_Framework_TestCase
         $validation = new Validation($data_manager_stub);
         $this->expectException(ErrorMatrixSizeException::class);
         $validation->isValidMatrixSize(0, 2);
+    }
+
+    //----------------------------------------------------------------------------
+    public function test_number_operations_succes()
+    {
+        $data_manager_stub = $this->createMock(DataManager::class);
+        $data_manager_stub->method('get')
+                ->willReturn('xxx');
+
+        $validation = new Validation($data_manager_stub);
+        $response = $validation->isValidNumberOperations(2, 2);
+
+        $this->assertTrue($response);
+    }
+
+    public function test_number_operations_equal_1001()
+    {
+        $data_manager_stub = $this->createMock(DataManager::class);
+        $data_manager_stub->method('get')
+                ->willReturn('xxx');
+
+        $validation = new Validation($data_manager_stub);
+        $this->expectException(ErrorNumberOperationsException::class);
+        $validation->isValidNumberOperations(1001, 2);
+    }
+
+    public function test_number_operations_equal_0()
+    {
+        $data_manager_stub = $this->createMock(DataManager::class);
+        $data_manager_stub->method('get')
+                ->willReturn('xxx');
+
+        $validation = new Validation($data_manager_stub);
+        $this->expectException(ErrorNumberOperationsException::class);
+        $validation->isValidNumberOperations(0, 2);
     }
 }
