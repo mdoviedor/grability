@@ -25,5 +25,8 @@ return [
             'title' => 'Registrarse',
             'button' => 'Regstrarse',
         ],
+        'home' => [
+            'title' => 'Inicio',
+        ],
     ],
 ];

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\CubeSummation;
 use App\Http\Controllers\Controller;
 use App\Http\Lib\CubeSummation\CubeSummation;
 use App\Http\Lib\CubeSummation\DataPlainDriver;
+use Exception;
 use Illuminate\Http\Request;
+use Styde\Html\Facades\Alert;
 
 class PublicGeneratorController extends Controller
 {
@@ -24,7 +26,17 @@ class PublicGeneratorController extends Controller
 
         $dataPlainDriver = new DataPlainDriver($data);
         $cubeSummation = new CubeSummation($dataPlainDriver);
-        $response = $cubeSummation->get();
+        try {
+            $response = $cubeSummation->get();
+        } catch (Exception $exc) {
+            Alert::info('Ejecución fallida')
+                    ->details($exc->getMessage());
+
+            \error_log(print_r($exc, true));
+
+            return redirect()->route('cube_summation.public_generator');
+        }
+
         \error_log(print_r($response, true));
     }
 }

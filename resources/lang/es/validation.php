@@ -143,5 +143,8 @@ return [
         'time' => 'hora',
         'subject' => 'asunto',
         'message' => 'mensaje',
+        'cases' => 'casos',
+        'case' => 'caso',
+        'generate' => 'generar',
     ],
 ];
