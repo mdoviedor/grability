@@ -12,7 +12,7 @@ class DataManager
     /**
      * @var array
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var DataDriverInterface
@@ -22,19 +22,12 @@ class DataManager
     public function __construct(DataDriverInterface $driver)
     {
         $this->driver = $driver;
-
         $this->load();
     }
 
-    protected function load(): void
+    protected function load()
     {
-        $data = $this->driver->load();
-
-        if (!is_array($data)) {
-            $data = $this->buildArraySincePlainText($data);
-        }
-
-        $this->data = $data;
+        $this->data = $this->driver->load();
     }
 
     public function get(): array

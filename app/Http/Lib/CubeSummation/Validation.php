@@ -36,19 +36,18 @@ class Validation
     public function validate(array $data): array
     {
         $this->isValidNumberCases($data['T']);
+        foreach ($data['cases'] as $key => $case) {
+            $this->isValidMatrixSize($case['matrix_size'], $key);
+            $this->isValidNumberOperations($case['number_operations'], $key);
+            $this->isValidNumberOperations(count($case['operation']), $key);
 
-        foreach ($data['cases'] as $key => $value) {
-            $this->isValidMatrixSize($value['matrix_size'], $key);
-            $this->isValidNumberOperations($value['number_operations'], $key);
-            $this->isValidNumberOperations(count($value['operation']), $key);
-
-            foreach ($data['operation'] as $operation) {
+            foreach ($case['operation'] as $operation) {
                 switch ($operation['type']) {
                     case 'UPDATE':
-                        $this->isValidOperationUpdate($operation, $matrixSize, $key);
+                        $this->isValidOperationUpdate($operation, $case['matrix_size'], $key);
                         break;
                     case 'QUERY':
-                        $this->isValidOperationQuery($operation, $matrixSize, $key);
+                        $this->isValidOperationQuery($operation, $case['matrix_size'], $key);
                         break;
                 }
             }
