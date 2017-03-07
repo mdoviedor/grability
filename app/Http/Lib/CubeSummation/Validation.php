@@ -15,16 +15,16 @@ use App\Http\Lib\CubeSummation\exceptions\ErrorNumberOperationsException;
 class Validation
 {
     /**
-     * @var array
+     * @var DataManager
      */
-    protected $data;
+    protected $dataManager;
 
     /**
      * @param DataManager $data
      */
-    public function __construct(DataManager $data)
+    public function __construct(DataManager $dataManager)
     {
-        $this->data = $this->validate($data->get());
+        $this->dataManager = $dataManager;
     }
 
     /**
@@ -37,7 +37,7 @@ class Validation
         $this->isValidNumberCases($data['T']);
 
         foreach ($data['cases'] as $key => $value) {
-            $this->isValidMatrixSize($value[$matrix_size], $key);
+            $this->isValidMatrixSize($value['matrix_size'], $key);
             $this->isValidNumberOperations($value['number_operations'], $key);
         }
 
@@ -49,7 +49,7 @@ class Validation
      */
     public function get(): array
     {
-        return $this->data;
+        return $this->validate($this->dataManager->get());
     }
 
     /**
@@ -71,8 +71,8 @@ class Validation
     }
 
     /**
-     * @param int $matrix_size
-     * @param int $case_number
+     * @param int $matrixSize
+     * @param int $caseNumber
      *
      * @return bool
      *

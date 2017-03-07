@@ -13,11 +13,16 @@ use App\Http\Lib\CubeSummation\exceptions\ErrorFormatInfoOperationException;
 class DataPlainDriver implements DataDriverInterface
 {
     /**
+     * @var string
+     */
+    protected $data;
+
+    /**
      * @param string $data
      */
     public function __construct(string $data)
     {
-        $this->data = $this->buildArray($data);
+        $this->data = $data;
     }
 
     /**
@@ -25,7 +30,7 @@ class DataPlainDriver implements DataDriverInterface
      */
     public function load(): array
     {
-        return $this->data;
+        return $this->buildArray($this->data);
     }
 
     /**
@@ -39,7 +44,7 @@ class DataPlainDriver implements DataDriverInterface
     public function isValidFormatInfoCase(array $infoCase, int $caseNumber): bool
     {
         if (count($infoCase) !== 2) {
-            throw new ErrorFormatInfoCase(spintf('Formato de la información  del caso invalido.'
+            throw new ErrorFormatInfoCaseException(sprintf('Formato de la información  del caso invalido.'
                     .' Error en el caso %s', $caseNumber));
         }
 
@@ -50,13 +55,13 @@ class DataPlainDriver implements DataDriverInterface
     {
         if ($infoOperation[0] === 'UPDATE' && count($infoOperation) !== 5) {
             throw new ErrorFormatInfoOperationException(sprintf('Formato de la información de la '
-                    .'operación UPDATE invalido. Error en el caso %s'.$caseNumber));
+                    .'operación UPDATE invalido. Error en el caso %s', $caseNumber));
         } elseif ($infoOperation[0] === 'QUERY' && count($infoOperation) !== 7) {
             throw new ErrorFormatInfoOperationException(sprintf('Formato de la información de la '
-                    .'operación QUERY invalido. Error en el caso %s'.$caseNumber));
+                    .'operación QUERY invalido. Error en el caso %s', $caseNumber));
         } elseif ($infoOperation[0] !== 'UPDATE' && $infoOperation[0] !== 'QUERY') {
             throw new ErrorFormatInfoOperationException(sprintf('La operación no es de ningún tipo.'
-                    .' Error en el caso %s'.$caseNumber));
+                    .' Error en el caso %s', $caseNumber));
         }
 
         return true;
@@ -65,41 +70,62 @@ class DataPlainDriver implements DataDriverInterface
     /**
      * @param string $data
      *
-     * @throws ErrorFormatInfoCaseException
+     * @throws ErrorFormatInfoCaseException, ErrorFormatInfoOperationException
      */
     public function buildArray(string $data): array
     {
         $array = [];
         $lines = explode("\n", $data);
 
-        $numberCases = $lines[0];
+        $numberCases = intval($lines[0]);
 
         $array['T'] = $numberCases;
         $indexCase = 1;
+        $caseNumber = 0;
         do {
-            $caseNumber += 1;
+            ++$caseNumber;
 
             $infoCase = explode(' ', $lines[$indexCase]);
-
             $this->isValidFormatInfoCase($infoCase, $caseNumber);
 
             $matrixSize = $infoCase[0];
-            $numberOperations = $info_case[1];
+            $numberOperations = $infoCase[1];
 
             $array['cases'][$caseNumber] = [
-                'case_number' => $caseNumber,
-                'matrix_size' => $matrixSize,
-                'number_operations' => $numberOperations,
+                'case_number' => intval($caseNumber),
+                'matrix_size' => intval($matrixSize),
+                'number_operations' => intval($numberOperations),
             ];
 
-            for ($operation = $indexCase; $operation <= ($indexCase + $numberOperations); ++$operation) {
-                $infoOperation = explode(' ', $lines[$indexCase]);
+            for ($operation = $indexCase + 1; $operation <= ($indexCase + $numberOperations); ++$operation) {
+                $infoOperation = explode(' ', $lines[$operation]);
 
                 $this->isValidFormatInfoOperation($infoOperation, $caseNumber);
 
-                $array[$case_number]['operation'][] = $info_operation;
+                if ($infoOperation[0] === 'UPDATE') {
+                    $array['cases'][$caseNumber]['operation'][] = [
+                        'type' => 'UPDATE',
+                        'text' => $lines[$operation],
+                        'x' => intval($infoOperation[1]),
+                        'y' => intval($infoOperation[2]),
+                        'z' => intval($infoOperation[3]),
+                        'W' => intval($infoOperation[4]),
+                    ];
+                } else {
+                    $array['cases'][$caseNumber]['operation'][] = [
+                        'type' => 'QUERY',
+                        'text' => $lines[$operation],
+                        'x1' => intval($infoOperation[1]),
+                        'y1' => intval($infoOperation[2]),
+                        'z1' => intval($infoOperation[3]),
+                        'x2' => intval($infoOperation[4]),
+                        'y2' => intval($infoOperation[5]),
+                        'z2' => intval($infoOperation[6]),
+                    ];
+                }
             }
-        } while (true);
+            $indexCase += $numberOperations + 1;
+        } while ($caseNumber !== $numberCases);
 
         return $array;
     }
