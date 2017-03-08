@@ -7,9 +7,12 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+        {!! Html::style('css/app.css') !!}
         <!-- Styles -->
         <style>
             html, body {
@@ -22,7 +25,7 @@
             }
 
             .full-height {
-                height: 100vh;
+                height: 400px;
             }
 
             .flex-center {
@@ -82,5 +85,12 @@
                 @yield('content')   
             </div>
         </div>
+        <div class="container">
+            @yield('content_r') 
+        </div>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        @yield('scripts')
     </body>
 </html>

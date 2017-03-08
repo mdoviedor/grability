@@ -77,6 +77,10 @@ class DataPlainDriver implements DataDriverInterface
         $array = [];
         $lines = explode("\n", $data);
 
+        if (count($lines) === 1) {
+            throw new ErrorFormatInfoCaseException('Definición incorrecta de la prueba');
+        }
+
         $numberCases = intval($lines[0]);
 
         $array['T'] = $numberCases;
