@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -26,4 +26,23 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Test
+     */
+    public function createTest(array $data)
+    {
+        $test = new Test($data);
+
+        $this->tests()->save($test);
+
+        return $test;
+    }
 }
