@@ -13,6 +13,7 @@ class CreateTests extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->increments('id');
+
             $table->integer('size')->unsigned();
 
             $table->integer('user_id')->unsigned();

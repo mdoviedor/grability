@@ -19,4 +19,18 @@ class Test extends Model
     {
         return $this->hasMany(Cube::class);
     }
+
+    /**
+     * @param array $data
+     *
+     * @return \App\Cube
+     */
+    public function createCube(array $data)
+    {
+        $cube = new Cube($data);
+
+        $this->cubes()->save($cube);
+
+        return $cube;
+    }
 }

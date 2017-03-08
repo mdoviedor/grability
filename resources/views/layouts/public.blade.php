@@ -72,7 +72,7 @@
             @if (Route::has('login'))
             <div class="top-right links">
                 @if (Auth::check())
-                <a href="{{ url('/home') }}">@lang('auth.attributes.home.title')</a>
+                <a href="{{ url('/cube_summation/list') }}">@lang('auth.attributes.home.title')</a>
                 @else
                 <a href="{{ url('/login') }}">@lang('auth.attributes.login.title')</a>
                 <a href="{{ url('/register') }}">@lang('auth.attributes.register.title')</a>
@@ -89,8 +89,8 @@
             @yield('content_r') 
         </div>
 
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
         @yield('scripts')
     </body>
 </html>

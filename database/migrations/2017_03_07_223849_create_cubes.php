@@ -14,7 +14,7 @@ class CreateCubes extends Migration
         Schema::create('cubes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('matrix_size')->unsigned();
-            $table->integer('case_number')->unsigned();
+            $table->integer('number_operations')->unsigned();
 
             $table->integer('test_id')->unsigned();
             $table->foreign('test_id')->references('id')->on('tests');

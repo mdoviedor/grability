@@ -20,7 +20,7 @@ class CreateOperationsQuery extends Migration
             $table->integer('y2')->unsigned();
             $table->integer('z2')->unsigned();
 
-            $table->integer('result')->unsigned()->nullable();
+            $table->integer('result')->unsigned();
 
             $table->integer('cube_id')->unsigned();
             $table->foreign('cube_id')->references('id')->on('cubes');

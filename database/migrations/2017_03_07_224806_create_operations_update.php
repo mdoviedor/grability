@@ -16,7 +16,7 @@ class CreateOperationsUpdate extends Migration
             $table->integer('x')->unsigned();
             $table->integer('y')->unsigned();
             $table->integer('z')->unsigned();
-            $table->integer('w')->unsigned();
+            $table->integer('W')->unsigned();
 
             $table->integer('cube_id')->unsigned();
             $table->foreign('cube_id')->references('id')->on('cubes');
