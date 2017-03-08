@@ -9,7 +9,10 @@ namespace App\Http\Lib\CubeSummation;
  */
 class DataManager
 {
-    protected $data;
+    /**
+     * @var array
+     */
+    protected $data = [];
 
     /**
      * @var DataDriverInterface
@@ -19,17 +22,15 @@ class DataManager
     public function __construct(DataDriverInterface $driver)
     {
         $this->driver = $driver;
-
         $this->load();
-        $this->validate();
     }
 
-    protected function load(): void
+    protected function load()
     {
         $this->data = $this->driver->load();
     }
 
-    public function get()
+    public function get(): array
     {
         return $this->data;
     }

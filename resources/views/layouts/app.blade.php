@@ -77,7 +77,7 @@
                 </div>
             </div>
         </nav>
-
+        {!! Alert::render() !!}
         @yield('content')
     </div>
 

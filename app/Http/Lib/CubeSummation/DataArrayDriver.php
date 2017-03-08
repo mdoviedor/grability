@@ -16,17 +16,8 @@ class DataArrayDriver implements DataDriverInterface
         $this->data = $data;
     }
 
-    //put your code here
     public function load(): array
     {
         return $this->data;
-    }
-
-    public function errors(): array
-    {
-    }
-
-    public function validation()
-    {
     }
 }
